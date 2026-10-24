@@ -12,7 +12,8 @@ import {
     RenderVideoService,
     TextToSpeechService,
     YoutubeUploadService,
-    GenerateTitleServce
+    GenerateTitleService,
+    GenerateImageService
 } from '../services';
 import { getLatestFileCreated } from '../utils/getFiles';
 
@@ -99,7 +100,9 @@ const youtube = async ({
 
         content = await new GetYoutubeInfoService(content).execute();
 
-        content = await new GenerateTitleServce(content).execute();
+        content = await new GenerateTitleService(content).execute();
+
+        content = await new GenerateImageService(content).execute();
 
         await new ExportDataService(content).execute(file);
 

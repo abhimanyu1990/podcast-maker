@@ -1,6 +1,6 @@
 {
     "name": "podcast-maker",
-    "version": "2.5.10",
+    "version": "2.7.0",
     "description": "Podcast Maker CLI",
     "author": "Felippe Chemello @FelippeChemello",
     "bin": {
@@ -20,7 +20,7 @@
     "scripts": {
         "build": "shx rm -rf dist && tsc -b",
         "postpack": "shx rm -f oclif.manifest.json",
-        "prepack": "yarn build && oclif manifest && oclif readme",
+        "prepack": "pnpm build && oclif manifest && oclif readme",
         "version": "oclif readme && git add README.md",
         "postbuild": "copyfiles -u 1 assets/**/* dist/assets",
         "dev": "./bin/dev"
@@ -30,15 +30,15 @@
         "registry": "https://registry.npmjs.org/"
     },
     "dependencies": {
-        "@google/generative-ai": "^0.1.3",
+        "@google/genai": "^0.7.0",
         "@oclif/core": "^1",
         "@oclif/plugin-help": "^5",
         "@oclif/plugin-plugins": "^2.0.1",
-        "@remotion/bundler": "4.0.79",
-        "@remotion/cli": "4.0.79",
-        "@remotion/eslint-config": "4.0.79",
-        "@remotion/media-utils": "4.0.79",
-        "@remotion/renderer": "4.0.79",
+        "@remotion/bundler": "4.0.251",
+        "@remotion/cli": "4.0.251",
+        "@remotion/eslint-config": "4.0.251",
+        "@remotion/media-utils": "4.0.251",
+        "@remotion/renderer": "4.0.251",
         "audioconcat": "^0.1.4",
         "axios": "^1.6.2",
         "commander": "^11.1.0",
@@ -49,12 +49,13 @@
         "googleapis-common": "^7.0.1",
         "http": "0.0.1-security",
         "microsoft-cognitiveservices-speech-sdk": "^1.34.0",
+        "mime-types": "^3.0.1",
         "node-html-parser": "^6.1.11",
         "puppeteer": "^21.6.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-icons": "^4.12.0",
-        "remotion": "4.0.79",
+        "remotion": "4.0.251",
         "rss-parser": "^3.13.0",
         "shelljs": "^0.8.5",
         "string-width": "^7.0.0",

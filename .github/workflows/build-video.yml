@@ -9,6 +9,12 @@ on:
             - 'content/*.json'
             - '**.json'
     workflow_dispatch:
+        inputs:
+            debug_mode:
+                description: 'Debug with SSH'
+                type: boolean
+                required: false
+                default: false
 
 env:
     DEBUG: 1
@@ -21,6 +27,8 @@ env:
     INSTAGRAM_PASSWORD: ${{ secrets.INSTAGRAM_PASSWORD }}
     YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
     GOOGLE_MAKERSUITE_API_KEY: ${{ secrets.GOOGLE_MAKERSUITE_API_KEY }}
+    IMAGE_GENERATOR_URL: ${{ secrets.IMAGE_GENERATOR_URL }}
+    IMAGE_GENERATOR_API_KEY: ${{ secrets.IMAGE_GENERATOR_API_KEY }}
     #  ACTIONS_RUNNER_DEBUG: true
     #  ACTIONS_STEP_DEBUG: true
 
@@ -35,6 +43,11 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+            
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 8
 
             - name: podcast-maker CLI cache
               uses: actions/cache@v3
@@ -44,13 +57,13 @@ jobs:
                       **/node_modules
                       dist
                       bin
-                  key: cli-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+                  key: cli-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/pnpm.lock') }}
 
             - name: Build
               if: steps.podcast-maker-cache.outputs.cache-hit != 'true'
               run: |
-                  yarn
-                  yarn build
+                  pnpm i
+                  pnpm build
 
             - name: Move content file to be processed
               run: |
@@ -67,7 +80,7 @@ jobs:
               run: ./bin/run create tts
 
             - name: Save TTS files in Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: audio-files
                   path: |
@@ -94,6 +107,11 @@ jobs:
               with:
                   node-version: 18
 
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 8
+
             - name: Install FFMPEG
               uses: FedericoCarboni/setup-ffmpeg@v1
 
@@ -105,20 +123,20 @@ jobs:
                       **/node_modules
                       dist
                       bin
-                  key: cli-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/yarn.lock') }}
+                  key: cli-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/pnpm.lock') }}
 
             - name: Build
               if: steps.podcast-maker-cache.outputs.cache-hit != 'true'
               run: |
-                  yarn
-                  yarn build
+                  pnpm i
+                  pnpm build
 
             - name: Get tmp path
               id: tmp
               run: echo "tmpPath=$(./bin/run info tmp --dir)" >> $GITHUB_OUTPUT
 
             - name: Download TTS files
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v4
               with:
                   name: audio-files
                   path: ${{ steps.tmp.outputs.tmpPath }}/
@@ -129,12 +147,18 @@ jobs:
                 echo "Linking $Tmp to public"
                 ln -sf $Tmp public
 
+            - name: Debug
+              if: ${{ inputs.debug_mode }}
+              uses: mxschmitt/action-tmate@v3
+              with:
+                  limit-access-to-actor: true
+
             - name: Create Youtube video
               run: ./bin/run create youtube --upload
 
             - name: Save video in Artifacts
               if: ${{ failure() }}
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: youtube-video-assets
                   path: |
@@ -145,7 +169,7 @@ jobs:
                   retention-days: 2
 
             - name: Save content in Artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: content-file
                   path: |

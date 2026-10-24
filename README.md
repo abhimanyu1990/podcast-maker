@@ -1,3 +1,6 @@
+> [!WARNING]
+> **This repository has been archived** and is no longer maintained. Please visit the new [ai-video-engine](https://github.com/FelippeChemello/ai-video-engine) repository for the latest updates and features.
+
 <div align="center">
   <img src="assets/LogoPodcast.png">
 </div>
@@ -8,16 +11,6 @@
     <a href="https://github.com/FelippeChemello">
         <img alt="Author" src="https://img.shields.io/badge/Author-FelippeChemello-blue?style=for-the-badge&logo=appveyor">
     </a> 
-    <br/>
-    <a href="https://github.com/FelippeChemello/sync.video/actions">
-        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/felippechemello/podcast-maker/Create%20content%20file?label=generate%20content%20file%20from%20email&style=for-the-badge">
-    </a>
-    <a href="https://github.com/FelippeChemello/sync.video/actions">
-        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/felippechemello/podcast-maker/Auto%20Merge%20Pull%20Requests?style=for-the-badge&label=Auto%20Merge%20content%20files">
-    </a>
-    <a href="https://github.com/FelippeChemello/sync.video/actions">
-        <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/felippechemello/podcast-maker/Create%20video?style=for-the-badge&label=Render%20and%20publish%20videos">
-    </a>
     <br/>
     <a href="https://www.npmjs.com/package/podcast-maker">
         <img alt="GitHub Workflow Status" src="https://img.shields.io/npm/v/podcast-maker/latest?label=CLI&style=for-the-badge">
@@ -44,7 +37,7 @@ This project was developed using:
 
 ## ⚙️ Requirements
 
--   You need to install both NodeJS, Yarn, FFMPEG and Full Google Chrome to run this project (To run it on as Server Side, check actions workflow [here](https://github.com/FelippeChemello/podcast-maker/blob/master/.github/workflows/build-video.yml#L215-L223))
+-   You need to install both NodeJS, PNPM, FFMPEG and Full Google Chrome to run this project (To run it on as Server Side, check actions workflow [here](https://github.com/FelippeChemello/podcast-maker/blob/master/.github/workflows/build-video.yml#L215-L223))
 -   Access to YouTube API and/or Account on Instagram
 
 ## 💻 Getting started
@@ -60,15 +53,17 @@ $ git clone https://github.com/FelippeChemello/podcast-maker.git
 **Install dependencies**
 
 ```sh-session
-$ yarn
+$ pnpm
 ```
 
 **Build and configure**
 
 ```sh-session
-$ yarn build
+$ pnpm build
 $ ./bin/run configure
 ```
+
+> To configure image generation, you need to setup [this project](https://github.com/FelippeChemello/modal_flux.1) and use the provided production URL
 
 ### Contribute
 
@@ -81,7 +76,7 @@ $ git clone https://github.com/FelippeChemello/podcast-maker.git && cd podcast-m
 **Install dependencies**
 
 ```sh-session
-$ yarn
+$ pnpm i
 ```
 
 **Copy .env.local to .env and edit environment variables or configure using CLI**
@@ -94,7 +89,7 @@ $ vim .env
 or
 
 ```sh-session
-$ yarn build
+$ pnpm build
 $ ./bin/run configure
 ```
 
